@@ -35,6 +35,37 @@ if (arglist.v && arglist.v > 0) {
 	startupOptions.accounts = accounts;
 }
 
+var myAccounts = [];
+if (arglist.mykeys) {
+	try {
+	var mykeys = require("./.mykeys.json");
+	
+	} catch (e) {
+		console.error("Did you make sure .mykeys exists in this folder before running the command with the mykeys flag?");
+		return;
+	}
+
+	for (var key in mykeys) {
+		if (mykeys.hasOwnProperty(key)) {
+			console.log("Queueing account " + key);
+			myAccounts.push({"balance": 0x1BD7A1BED4A0A0000, "secretKey": mykeys[key]});
+		}
+	}
+	
+	if (startupOptions.hasOwnProperty("accounts")) {
+		console.log("Merging own keys with pre-generated");
+		startupOptions.accounts = startupOptions.accounts.concat(myAccounts);
+	} else {
+		console.log("Generating faucet account and appending queued keys.");
+		myAccounts.unshift({"balance": 0xD3C21BCECCEDA1000000});
+		startupOptions.accounts = myAccounts;
+	}
+}
+
+let unlockedAccounts = 
+console.log("Bootstrapping with options:");
+console.log(startupOptions);
+
 const ganache = require("ganache-cli");
 const provider = new ethers.providers.Web3Provider(ganache.provider(startupOptions));
 
@@ -54,7 +85,7 @@ provider.listAccounts().then(function(result){
 			console.log("Private key of faucet account "+ result[0] +" now in /deploy/keys/faucetkey.txt. It is seeded with ~" + faucetAmount + " ether.");
 		}); 
 
-		deployDepositContract(mnemonicWallet.privateKey);
+		deployDepositContract(mnemonicWallet.privateKey).then(makeValidatorDeposits);
 	});
 
 });
@@ -62,7 +93,7 @@ provider.listAccounts().then(function(result){
 async function deployDepositContract(pk) {
     let factory = new ethers.ContractFactory(deposit_contract_abi, deposit_contract_bytecode, new ethers.Wallet(pk, provider));
     let contract = await factory.deploy();
-	console.log("Contract generated at " + contract.address + " via TX " + contract.deployTransaction.hash);
+	console.log("Contract will be generated at " + contract.address + " when TX " + contract.deployTransaction.hash) + " is mined.";
 	
 	fs.writeFile("deploy/keys/deposit_contract.txt", contract.address, function(err) {
 		if(err) {
@@ -71,6 +102,32 @@ async function deployDepositContract(pk) {
 		console.log("Contract address saved in deploy/keys.");
 	}); 
 
-    // The contract is NOT deployed yet; we must wait until it is mined
-    await contract.deployed()
+    await contract.deployed().then(function(){console.log("Contract deployed and ready.")});
+}
+
+async function makeValidatorDeposits() {
+	console.log("Starting validator deposits")
+
+	provider.listAccounts().then(function(result) {
+		// Remove first one (faucet account)
+		var accounts = result.splice(1);
+		
+		for (var i = 1; i < accounts.length; i++) {
+			let signer = provider.getSigner(accounts[i]);
+			
+			// TODO deposits, need to figure out BLS
+			
+			// signer.sendTransaction({
+			// 	to: accounts[0],
+			// 	value: ethers.utils.parseEther('15.0')
+			// }).then(function(txReceipt) {
+			// 	provider.getBalance(accounts[0]).then(console.log);
+			// }.bind(accounts));
+
+		}
+
+		// for (var i = 0; i < accounts.length; i++) {
+		// 	provider.getBalance(accounts[i]).then(console.log);
+		// }
+	});
 }

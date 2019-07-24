@@ -20,9 +20,10 @@ The blockchain database will be stored in the `deploy/db` subfolder. The `deploy
 
 #### Flags
 
-Augment `start.js` with flags, .e.g. `node start.js v=50`:
+Augment `start.js` with flags, .e.g. `node start.js v=50 mykeys`:
 
 - `v` : Number of validators to generate. These validators will be generated with 32.1 ether each and will auto-deposit 32 ether to the deposit contract. Their private keys will be in `deploy/keys` @TODO, `account_keys_path` in Ganache seems bugged.
+- `mykeys`: This is a boolean flag, so just include it to activate it. Passing this in will make the boostrapper read a `.mykeys.json` file in the root of the project, looking for private keys. The file should be a JSON object of address=>privkey pairs, `0x` included. These keys will then also be included as validators: they will be given 32.1 ether and deposit it into the contract. See `.mykeys.example` for example.
 
 ### Hosting
 

@@ -6,3 +6,4 @@ deploy/keys/*
 deploy/faucet/*
 !.gitkeep
 *.log
+.mykeys.json
