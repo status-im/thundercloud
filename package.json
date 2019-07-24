@@ -1,0 +1,16 @@
+{
+  "name": "thundercloud",
+  "version": "0.1",
+  "description": "Ganache starter kit for Ethereum 2.0 genesis",
+  "main": "index.js",
+  "author": "Bruno Škvorc <bruno@bitfalls.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "ethers": "^4.0.33",
+    "ganache-cli": "^6.5.0"
+  },
+  "scripts": {
+    "clean": "rm -rf deploy/db/*"
+  }
+}
