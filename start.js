@@ -214,17 +214,21 @@ async function makeValidatorDeposits() {
 			  ["amount", "uint64"],
 			  ["signature", "bytes96"],
 			],
-		  }));
+		  }), new BN('3').toBuffer('le', 8));
 
 		// A signer is needed to sign a transaction from a given account
-		let signer = provider.getSigner(item.address);
-		contract.connect(signer);
-		let tx = contract.deposit(sign_pubkey, withdrawalCredentials, signature_d);
+		let wallet = new ethers.Wallet(item.pk, provider);
+		contract.connect(wallet);
+		let tx = await contract.deposit(sign_pubkey, withdrawal_credentials, signature_d);
 
 		console.log("Validator " + item.address + " is depositing 32 ether to the deposit contract at " + contractAddress + " via TX " + tx.hash);
-		tx.wait();
 	});
 
+	serverStart();
+
+}
+
+function serverStart() {
 	const server = ganache.server(startupOptions);
 	server.listen(8545, function(err, blockchain) {
 		// The server starts, you can connect to it with RPC now.
