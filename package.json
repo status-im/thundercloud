@@ -6,6 +6,7 @@
   "author": "Bruno Škvorc <bruno@bitfalls.com>",
   "license": "MIT",
   "dependencies": {
+    "@chainsafe/bls-js": "^0.1.5",
     "dotenv": "^8.0.0",
     "ethers": "^4.0.33",
     "ganache-cli": "^6.5.0"

@@ -12,9 +12,9 @@ You will have to pollute your system a little for this to work. Luckily, it work
 
 ### Start
 
-Change the mnemonic to your own in `.env.example` and rename `.env.example` to `.env`.
-
-- Run `node start.js` with optional flags
+1. Clone repo and modify the mnemonic in the `.env` file.
+2. If you want to add some pre-created private keys, add them to the `.mykeys` file.
+3. Run `node start.js`. Optionally, pass in a `v` argument to autogenerate that many validators (`v=10`) and/or the `mykeys` argument to make the script read the keys specified in step 2.
 
 The blockchain database will be stored in the `deploy/db` subfolder. The `deploy/keys` subfolder will have keys for relevant accounts generated, including the address to the deposit contract. The `deploy/faucet` folder will contain a simple web UI for a faucet.
 
@@ -22,20 +22,20 @@ The blockchain database will be stored in the `deploy/db` subfolder. The `deploy
 
 Augment `start.js` with flags, .e.g. `node start.js v=50 mykeys`:
 
-- `v` : Number of validators to generate. These validators will be generated with 32.1 ether each and will auto-deposit 32 ether to the deposit contract. Their private keys will be in `deploy/keys` @TODO, `account_keys_path` in Ganache seems bugged.
-- `mykeys`: This is a boolean flag, so just include it to activate it. Passing this in will make the boostrapper read a `.mykeys.json` file in the root of the project, looking for private keys. The file should be a JSON object of address=>privkey pairs, `0x` included. These keys will then also be included as validators: they will be given 32.1 ether and deposit it into the contract. See `.mykeys.example` for example.
+- `v` : Number of validators to generate. These validators will be generated with 32.1 ether each and will auto-deposit 32 ether to the deposit contract. Their private keys will be in `deploy/keys`. Defaults to 10 if omitted, but only triggers default is `mykeys` argument not provided.
+- `mykeys`: This is a boolean flag, so just include it to activate it. Passing this in will make the boostrapper read a `.mykeys.json` file in the root of the project, looking for private keys. The file should be a JSON object of (address => privkey) pairs, `0x` included. These keys will then also be included as validators: they will be given 32.1 ether and deposit it into the contract. See `.mykeys.example` for example.
 
 ### Hosting
 
-To host the generated blockchain online, upload the `deploy` folder somewhere and `cd` into it.
+The generator is deterministic. You always end up with the same addresses, accounts and balances if you use the same mnemonic and `.mykeys` list. Thus, to host it somewhere, simply clone this repo to the server and run it the same way you do locally.
 
-- Run Ganache from the existing database with `yarn run ganache`. This auto-reads from `./db` and opens up web3/RPC so others can connect to your Ganache and try being validators.
-- Run the faucet with `yarn run faucet --port 8080`. The faucet will be hosted on port 8080.
-- @TODO Run the simple UI for validators to deposit Ether and check their balance with `yarn run validator-ui`.
+- `node start.js` will run the blockchain and start the server in listen mode with RPC/Web3 allowed
+- `yarn run faucet --port 8080` will host the ether faucet at `localhost:8080`
+- `yarn run validator-ui --port 8081` will host the validator UI at `localhost:8081` // @TODO
 
 ### Other commands
 
-- To clean the DB and start over delete `deploy/db/*` or run `yarn run clean`.
+- To clean the DB and start over run `yarn run clean`.
 
 ## Contributing
 
