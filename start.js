@@ -218,7 +218,7 @@ async function makeValidatorDeposits() {
 
 		// A signer is needed to sign a transaction from a given account
 		let wallet = new ethers.Wallet(item.pk, provider);
-		contract.connect(wallet);
+		contract = contract.connect(wallet);
 		let tx = contract.deposit(sign_pubkey, withdrawal_credentials, signature_d).then(console.log);
 
 		//console.log("Validator " + item.address + " is depositing 32 ether to the deposit contract at " + contractAddress + " via TX " + tx.hash);
