@@ -96,7 +96,7 @@ provider.listAccounts().then(function(result){
 		let mnemonic = process.env.mnemonic;
 		let mnemonicWallet = ethers.Wallet.fromMnemonic(mnemonic);
 		
-		fs.writeFile("deploy/keys/faucetkey.txt", mnemonicWallet.privateKey, function(err) {
+		fs.writeFile("deploy/keys/faucetkey.txt", mnemonicWallet.privateKey + ":" + mnemonicWallet.address, function(err) {
 			if(err) {
 				return console.log(err);
 			}
@@ -189,11 +189,12 @@ async function makeValidatorDeposits() {
 		let withdraw_pubkey = new keypair.Keypair(privateKey.PrivateKey.fromHexString(item.bls_key_withdraw)).publicKey.toHexString();
 
 		// Withdrawal credentials is the sha256 hash of the withdrawal pubkey (32 bytes), but the first byte of the hash is replaced with the prefix (currently 0 for version 0)
-		//let withdrawal_credentials = "00" + sha256.sha256(withdraw_pubkey).slice(2); // 32 byte output
-		let withdrawal_credentials = Buffer.from(sha256.arrayBuffer(withdraw_pubkey))
+		let withdrawal_credentials_hex = "0x00" + sha256.sha256(withdraw_pubkey).slice(2); // 32 byte output
+		let withdrawal_credentials = Buffer.from(sha256.arrayBuffer(withdraw_pubkey));
+		withdrawal_credentials[0] = 0;
 
 		// Signature is technically bls_sign(signing_privkey, signing_root(deposit_data)) but due to the circular dependency the signature here is actually ignored (!!) and can be nothing, null, or random data.
-		let signature_dd = Buffer.alloc(5);
+		let signature_dd = Buffer.alloc(0);
 
 		// Put it together somehow
 		let depositData = {
@@ -219,7 +220,7 @@ async function makeValidatorDeposits() {
 		// A signer is needed to sign a transaction from a given account
 		let wallet = new ethers.Wallet(item.pk, provider);
 		contract = contract.connect(wallet);
-		let tx = contract.deposit(sign_pubkey, withdrawal_credentials, signature_d).then(console.log);
+		let tx = contract.deposit(signkeys.publicKey.toHexString(), withdrawal_credentials_hex, signature_d).then(console.log);
 
 		//console.log("Validator " + item.address + " is depositing 32 ether to the deposit contract at " + contractAddress + " via TX " + tx.hash);
 	});

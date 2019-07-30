@@ -1,0 +1,133 @@
+html
+    head
+        <!------- META ------->
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        // Meta Description & Keywords
+        meta(name='description' content='The Thundercloud faucet lets you get 32 ether to deposit and become a test validator for Ethereum 2.0.')
+        meta(name='keywords' content='blockchain, ethereum')
+        // Favicon
+        link(rel='shortcut icon' href='assets/images/cloud.png')
+        // Site Title
+        title Thundercloud faucet
+
+        <!------- CSS ------->
+        link(rel='stylesheet' type='text/css' href='./assets/stylesheets/application.css')
+        link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+        link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,700' rel='stylesheet')
+        // Fontawesome icons
+        link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' integrity='sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr' crossorigin='anonymous')
+
+    body
+        .d-flex.w-100.h-100.mx-auto.flex-column
+            header.masthead.mb-auto.bring-to-front
+                .inner
+                    h1.hidden Thundercloud Testnet Faucet
+                    .allign-middle
+                        a(href='https://github.com/swader/thundercloud')
+                            img.center-logo-img(src='assets/images/cloud.png' alt='Thundercloud Logo')
+
+            main.inner.content(role='main')
+                .container
+                    .row.justify-content-center
+                        .flex-container.bring-to-front
+                            .card-container
+                                .card-flip.noflip
+                                    .flip
+                                        .front
+                                            .card.text-center
+                                                .card-header
+                                                    | Thundercloud faucet
+                                                .card-body
+                                                    form#faucetForm(action='/' method='POST')
+                                                        .form-group
+                                                            .input-group
+                                                                span.input-group-prepend
+                                                                    span.input-group-text.bg-transparent.border-right-0
+                                                                        i.fas.fa-wallet.fa-2x
+                                                                input#receiver.form-control.form-control-lg.py-2.border-left-0.border(name='receiver' type='text' placeholder='Enter wallet address...')
+                                                                span.input-group-append
+                                                                    button.btn.btn-outline-secondary.border-left-0.border(type='button' data-toggle='popover' data-trigger='focus' title='Wallet Address' data-content='This address will get the Ether')
+                                                                        i.fas.fa-info
+                                                        .form-group
+                                                            .input-group
+                                                                span.input-group-prepend
+                                                                    span.input-group-text.bg-transparent.border-right-0
+                                                                        i.fab.fa-twitter.fa-2x
+                                                                input#tweetUrl.form-control.form-control-lg.py-2.border-left-0.border(name='tweetUrl' type='text' placeholder='Enter tweet url...')
+                                                                span.input-group-append
+                                                                    button.btn.btn-outline-secondary.border-left-0.border(type='button' data-toggle='popover' data-trigger='focus' title='Tweet Url' data-content='Tweet about Thundercloud, then paste tweet URL here.')
+                                                                        i.fas.fa-info
+                                                        .form-group
+                                                            a.twitter-share-button(href=predefinedTweetUrl data-size='large')
+                                                                | Tweet about Thundercloud
+                                                        .form-group
+                                                            button#requestTokens.request-tokens-button(type='submit') Request #{maxAmount} Thundercloud Ether (🌩ETH)
+                                                .card-footer.text-muted
+                                                    .footer-balance
+                                                    .footer-note
+                                                        | There's a cooldown of #{cooldown} hours in place.
+                                                    .footer-button
+                                                        button.request-tokens-button.gray-button.toggle I want #{minAmount} 🌩ETH
+                                        .back
+                                            .card.text-center
+                                                .card-header
+                                                    | Thundercloud Faucet
+                                                .card-body
+                                                    form#faucetFormMin(action='/' method='POST')
+                                                        .form-group
+                                                            .input-group
+                                                                span.input-group-prepend
+                                                                    span.input-group-text.bg-transparent.border-right-0
+                                                                        i.fas.fa-wallet.fa-2x
+                                                                input#receiverMin.form-control.form-control-lg.py-2.border-left-0.border(name='receiver' type='text' placeholder='Enter wallet address...')
+                                                                span.input-group-append
+                                                                    button.btn.btn-outline-secondary.border-left-0.border(type='button' data-toggle='popover' data-trigger='focus' title='Wallet Address' data-content='This address will get the Ether.')
+                                                                        i.fas.fa-info
+                                                        .form-group
+                                                            button.request-tokens-button(type='submit') Request #{minAmount} 🌩ETH
+                                                .card-footer.text-muted
+                                                    .footer-balance
+                                                    .footer-button
+                                                        button.request-tokens-button.gray-button.toggle I want #{maxAmount} 🌩ETH
+            .loading-container.hidden
+                .loading
+                    .loading-i
+                    .loading-i
+                    .loading-i
+                    .loading-i
+                    .loading-i
+                    .loading-i
+        script(src='./assets/javascripts/application.js?v=1.4' type='text/javascript')
+        // jQuery, Popper.js, Bootstrap JS
+        script(src='assets/javascripts/vendor/jquery-3.3.1.min.js' integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=' crossorigin='anonymous')
+        script(src='assets/javascripts/vendor/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+        script(src='assets/javascripts/vendor/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+        script.
+          // Activate info popovers
+          $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+          });
+          $('.popover-dismiss').popover({
+            trigger: 'focus'
+          });
+          // Flip input card
+          $('.toggle').on('click', function () {
+            $('.card-flip').toggleClass("flip");
+          });
+
+        script.
+          // Activate tweet button
+          window.twttr = (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0], t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            t._e = [];
+            t.ready = function (f) {
+              t._e.push(f);
+            };
+            return t;
+          }(document, "script", "twitter-wjs"));

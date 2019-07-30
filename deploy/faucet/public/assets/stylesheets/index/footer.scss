@@ -1,0 +1,36 @@
+.row {
+  margin: 0!important;
+}
+
+.ft-img {
+  width: 100%;
+  max-height: 60px;
+  max-width: 100px;
+}
+
+.mastfoot {
+  background-color: #04091e;
+  color: #545454;
+  padding: 3px;
+}
+
+.center {
+  position: relative;
+  float: left;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.social-button {
+  color: rgb(40, 196, 255);
+}
+
+.footer-balance {
+  color: #3b3c44;
+  background-color: lightgray;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  font-weight: bold;
+}

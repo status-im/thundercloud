@@ -3,7 +3,13 @@ node_modules
 node_modules/*
 deploy/db/*
 deploy/keys/*
-deploy/faucet/*
+
+deploy/faucet/node_modules
+deploy/faucet/tweet-db
+deploy/faucet/config.json
+deploy/faucet/public/assets/javascripts/application.js
+deploy/faucet/public/assets/stylesheets/application.css
+
 !.gitkeep
 *.log
 .mykeys.json
