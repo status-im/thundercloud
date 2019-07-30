@@ -1,0 +1,52 @@
+{
+  "name": "thundercloud-faucet",
+  "version": "1.0.0",
+  "description": "Thundercloud faucet",
+  "main": "index.js",
+  "scripts": {
+    "start": "yarn run sass && yarn run coffee && node index.js",
+    "sass": "gulp sass",
+    "coffee": "gulp javascript",
+    "watch": "gulp watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swader/thundercloud"
+  },
+  "author": "swader",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "1.18.3",
+    "dateformat": "^3.0.3",
+    "ethereumjs-tx": "1.3.7",
+    "express": "4.16.4",
+    "level": "^4.0.0",
+    "moment": "2.24.0",
+    "page-scraper": "^2.0.5",
+    "pug": "^2.0.3",
+    "querystring": "0.2.0",
+    "string-similarity": "^3.0.0",
+    "typedarray-to-buffer": "^3.1.5",
+    "web3": "^1.0.0-beta.34"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-add-src": "1.0.0",
+    "gulp-autoprefixer": "6.0.0",
+    "gulp-cli": "2.0.1",
+    "gulp-concat": "2.6.1",
+    "gulp-concat-css": "3.1.0",
+    "gulp-include": "2.3.1",
+    "gulp-order": "1.2.0",
+    "gulp-postcss": "8.0.0",
+    "gulp-sass": "4.0.2",
+    "gulp-sass-glob": "1.0.9",
+    "gulp-uglify": "3.0.1",
+    "gulp-uglifycss": "1.1.0",
+    "http-server": "0.11.1"
+  },
+  "engines": {
+    "node": ">8.0"
+  }
+}

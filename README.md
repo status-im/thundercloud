@@ -16,7 +16,7 @@ You will have to pollute your system a little for this to work. Luckily, it work
 2. If you want to add some pre-created private keys, add them to the `.mykeys` file.
 3. Run `node start.js`. Optionally, pass in a `v` argument to autogenerate that many validators (`v=10`) and/or the `mykeys` argument to make the script read the keys specified in step 2.
 
-The blockchain database will be stored in the `deploy/db` subfolder. The `deploy/keys` subfolder will have keys for relevant accounts generated, including the address to the deposit contract. The `deploy/faucet` folder will contain a simple web UI for a faucet.
+The blockchain database will be stored in the `deploy/db` subfolder. The `deploy/keys` subfolder will have keys for relevant accounts generated, including the address to the deposit contract. The `deploy/faucet` folder will contain a simple web UI for a faucet. See hosting below for how to run it.
 
 #### Flags
 
@@ -30,8 +30,8 @@ Augment `start.js` with flags, .e.g. `node start.js v=50 mykeys`:
 The generator is deterministic. You always end up with the same addresses, accounts and balances if you use the same mnemonic and `.mykeys` list. Thus, to host it somewhere, simply clone this repo to the server and run it the same way you do locally.
 
 - `node start.js` will run the blockchain and start the server in listen mode with RPC/Web3 allowed
-- `yarn run faucet --port 8080` will host the ether faucet at `localhost:8080`
-- `yarn run validator-ui --port 8081` will host the validator UI at `localhost:8081` // @TODO
+- `yarn faucet` will host the ether faucet at `localhost:5000`
+- @TODO `yarn validator-ui` will host the validator UI at `localhost:8081`
 
 ### Other commands
 
@@ -39,7 +39,7 @@ The generator is deterministic. You always end up with the same addresses, accou
 
 ## Contributing
 
-Please consider contributing PRs, we'd love the help!
+Please consider contributing PRs, we'd love the help! There's only one condition: please try to keep the dependencies to a minimum of minimums, and do NOT use something that needs [node-gyp](https://github.com/nodejs/node-gyp/issues/809).
 
 ## License
 
