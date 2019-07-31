@@ -26,13 +26,12 @@ args.forEach(function (val, index, array) {
 	}
 });
 
-// @TODO make faucet balance configurable
 const startupOptions = {
-	"mnemonic": process.env.mnemonic,
-	"default_balance_ether": 1000000,
+	"mnemonic": process.env.MNEMONIC,
+	"default_balance_ether": process.env.FAUCET_AMOUNT,
 	"total_accounts": 1,
 	"db_path": "./deploy/db",
-	"network_id": 666,
+	"network_id": process.env.NETWORK_ID,
 	"account_keys_path": "./deploy/keys/validators.json" // Does not work yet: https://github.com/trufflesuite/ganache-cli/issues/663
 };
 
@@ -45,7 +44,7 @@ if (!arglist.v && !arglist.mykeys) {
 // Generate `v` number of accounts with 32.1 ether each
 var accounts = [];
 if (arglist.v && arglist.v > 0) {
-	accounts.push({"balance": 0xD3C21BCECCEDA1000000});
+	accounts.push({"balance": ethers.utils.bigNumberify(process.env.FAUCET_AMOUNT + "000000000000000000").toHexString()});
 	console.log("Creating " + arglist.v + " validator accounts and making deposits for them. Find their private keys in deploy/keys");
 	for (var i = 0; i < arglist.v; i++) {
 		accounts.push({"balance": 0x1BD7A1BED4A0A0000}); // 32.1 ether to each validator
@@ -76,7 +75,7 @@ if (arglist.mykeys) {
 		startupOptions.accounts = startupOptions.accounts.concat(myAccounts);
 	} else {
 		console.log("Generating faucet account and appending queued keys.");
-		myAccounts.unshift({"balance": 0xD3C21BCECCEDA1000000});
+		myAccounts.unshift({"balance": ethers.utils.bigNumberify(process.env.FAUCET_AMOUNT + "000000000000000000").toHexString()});
 		startupOptions.accounts = myAccounts;
 	}
 }
@@ -94,7 +93,7 @@ provider.listAccounts().then(function(result){
 
 		faucetAmount = balanceResult / 1e18;
 
-		let mnemonic = process.env.mnemonic;
+		let mnemonic = process.env.MNEMONIC;
 		let mnemonicWallet = ethers.Wallet.fromMnemonic(mnemonic);
 		
 		fs.writeFile("deploy/keys/faucetkey.txt", mnemonicWallet.privateKey + ":" + mnemonicWallet.address, function(err) {
@@ -102,6 +101,7 @@ provider.listAccounts().then(function(result){
 				return console.log(err);
 			}
 			console.log("Private key of faucet account "+ result[0] +" now in /deploy/keys/faucetkey.txt. It is seeded with ~" + faucetAmount + " ether.");
+			fwdFaucetConfiguration(mnemonicWallet);
 		}); 
 
 		deployDepositContract(mnemonicWallet.privateKey).then(makeValidatorDeposits);
@@ -147,7 +147,7 @@ async function makeValidatorDeposits() {
 	if (arglist.v) {
 		console.log("Generating keys for "+ arglist.v +" auto-generated accounts");
 		for (var i = 0; i <= arglist.v; i++) {
-			let mnemonicWallet = new ethers.Wallet.fromMnemonic(process.env.mnemonic, "m/44'/60'/0'/0/"+i);
+			let mnemonicWallet = new ethers.Wallet.fromMnemonic(process.env.MNEMONIC, "m/44'/60'/0'/0/"+i);
 			let pk = mnemonicWallet.privateKey;
 
 			let bls_key_sign = new keypair.Keypair(privateKey.PrivateKey.fromHexString(pk)).privateKey.toHexString();
@@ -270,7 +270,7 @@ async function makeValidatorDeposits() {
 
 async function serverStart() {
 	const server = ganache.server(startupOptions);
-	server.listen(8545, function(err, blockchain) {
+	server.listen(process.env.PORT, function(err, blockchain) {
 		// The server starts, you can connect to it with RPC now.
 		console.log("Server is running, feel free to connect!");
 
@@ -283,4 +283,28 @@ async function serverStart() {
 function invertHex(hexString) {
 	hexString = hexString.replace("0x", "");
 	return "0x" + hexString.split("").reverse().join("");
+}
+
+function fwdFaucetConfiguration(walletInfo) {
+	console.log("Configuring faucet.");
+	// check if config.json exists, if not, copy from config.json.example
+	if (!fs.existsSync("./deploy/faucet/config.json")) {
+		fs.copyFileSync("./deploy/faucet/config.json.example", "./deploy/faucet/config.json");
+		console.log("Config file created.");
+
+		let faucet_config = require("./deploy/faucet/config.json");
+		faucet_config.port = process.env.FAUCET_PORT;
+		faucet_config.Ethereum.prod.rpc = 'http://127.0.0.1:' + process.env.PORT;
+		faucet_config.Ethereum.prod.account = walletInfo.address;
+		faucet_config.Ethereum.prod.privateKey = walletInfo.privateKey;
+
+		fs.writeFile("./deploy/faucet/config.json", JSON.stringify(faucet_config), function(err) {
+			if(err) {
+				return console.log(err);
+			}
+			console.log("Saved new faucet configuration.");
+		}); 	
+	} else {
+		console.log("Config file for faucet already exists. Edit it manually or delete to regenerate it.");
+	}
 }

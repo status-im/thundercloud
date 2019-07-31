@@ -8,7 +8,7 @@ You will have to pollute your system a little for this to work. Luckily, it work
 
 - Install NVM to have a working NodeJS setup. If you don't, nodeJS and npm will probably break in many, many ways. Once you have NVM, set it to Node version 10.
 - Install the Yarn package manager: https://yarnpkg.com/lang/en/docs/install/
-- Run `yarn install` to install dependencies
+- Run `yarn install && cd deploy/faucet && yarn install` to install dependencies
 
 ### Start
 
