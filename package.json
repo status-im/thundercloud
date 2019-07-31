@@ -13,7 +13,7 @@
     "ganache-cli": "^6.5.0"
   },
   "scripts": {
-    "clean": "rm -rf deploy/db/*",
+    "clean": "rm -rf deploy/db/* && rm -rf deploy/keys/*",
     "faucet": "cd deploy/faucet && yarn start"
   }
 }

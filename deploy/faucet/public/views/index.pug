@@ -39,13 +39,13 @@ html
                                                 .card-header
                                                     | Thundercloud faucet
                                                 .card-body
-                                                    form#faucetForm(action='/' method='POST')
+                                                    form#faucetForm.ff(action='/' method='POST')
                                                         .form-group
                                                             .input-group
                                                                 span.input-group-prepend
                                                                     span.input-group-text.bg-transparent.border-right-0
                                                                         i.fas.fa-wallet.fa-2x
-                                                                input#receiver.form-control.form-control-lg.py-2.border-left-0.border(name='receiver' type='text' placeholder='Enter wallet address...')
+                                                                input#receiver.rec.form-control.form-control-lg.py-2.border-left-0.border(name='receiver' type='text' placeholder='Enter wallet address...')
                                                                 span.input-group-append
                                                                     button.btn.btn-outline-secondary.border-left-0.border(type='button' data-toggle='popover' data-trigger='focus' title='Wallet Address' data-content='This address will get the Ether')
                                                                         i.fas.fa-info
@@ -74,13 +74,13 @@ html
                                                 .card-header
                                                     | Thundercloud Faucet
                                                 .card-body
-                                                    form#faucetFormMin(action='/' method='POST')
+                                                    form#faucetFormMin.ff(action='/' method='POST')
                                                         .form-group
                                                             .input-group
                                                                 span.input-group-prepend
                                                                     span.input-group-text.bg-transparent.border-right-0
                                                                         i.fas.fa-wallet.fa-2x
-                                                                input#receiverMin.form-control.form-control-lg.py-2.border-left-0.border(name='receiver' type='text' placeholder='Enter wallet address...')
+                                                                input#receiverMin.rec.form-control.form-control-lg.py-2.border-left-0.border(name='receiver' type='text' placeholder='Enter wallet address...')
                                                                 span.input-group-append
                                                                     button.btn.btn-outline-secondary.border-left-0.border(type='button' data-toggle='popover' data-trigger='focus' title='Wallet Address' data-content='This address will get the Ether.')
                                                                         i.fas.fa-info
