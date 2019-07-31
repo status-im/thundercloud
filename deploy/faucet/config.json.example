@@ -1,6 +1,7 @@
 {
   "environment": "prod",
   "debug": false,
+  "port": "FAUCET_PORT",
   "Captcha": {
     "secret": "",
     "sitekey": ""
@@ -8,7 +9,7 @@
   "Tweeter": {
     "similarityTreshold": 0.75,
     "cooldown": 8,
-    "predefinedTweet": "I'm using the Thundercloud (https://github.com/swader/thundercloud) Faucet to get some Test Ether to launch an Ethereum 2.0 Genesis event",
+    "predefinedTweet": "I'm using the Thundercloud (https://github.com/status-im/thundercloud) Faucet to get some Test Ether to launch an Ethereum 2.0 Genesis event",
     "predefinedHashTags": "ethereum, eth2, serenity"
   },
   "Ethereum": {
@@ -16,9 +17,9 @@
     "milliEtherToTransferWithoutTweet": 1000,
     "gasLimit": "21000",
     "prod": {
-      "rpc": "http://127.0.0.1:8545",
-      "account": "0x471e0575bFC76d7e189ab3354E0ecb70FCbf3E46",
-      "privateKey": "2960a712dcbcd755be598955b08ee0f697b372aed31005bd55fd02949b6917bb"
+      "rpc": "http://127.0.0.1:PORT",
+      "account": "ADDRESS",
+      "privateKey": "PRIVATE_KEY_WITHOUT_0x"
     }
   }
 }
